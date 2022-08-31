@@ -27,10 +27,7 @@ export class HomeComponent implements OnInit {
 
   advancedCourses$: Observable<Course[]>;
 
-  constructor(
-    private coursesService: CourseService,
-    private dialog: MatDialog
-  ) {}
+  constructor(private coursesService: CourseService) {}
 
   ngOnInit() {
     const Courses$ = this.coursesService
@@ -43,17 +40,5 @@ export class HomeComponent implements OnInit {
     this.advancedCourses$ = Courses$.pipe(
       map(courses => courses.filter(course => course.category == "ADVANCED"))
     );
-  }
-
-  editCourse(course: Course) {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "400px";
-
-    dialogConfig.data = course;
-
-    const dialogRef = this.dialog.open(CourseDialogComponent, dialogConfig);
   }
 }

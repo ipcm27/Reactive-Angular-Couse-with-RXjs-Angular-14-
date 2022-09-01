@@ -4,13 +4,15 @@
   <mat-tab-group>
     <mat-tab label="Beginners">
       <courses-card-list
-        [courses]="beginnersCourses$ | async"
+        [courses]="beginnerCourses$ | async"
+        (coursesChanged)="reloadedCourses()"
       ></courses-card-list>
     </mat-tab>
 
     <mat-tab label="Advanced">
       <courses-card-list
         [courses]="advancedCourses$ | async"
+        (coursesChanged)="reloadedCourses()"
       ></courses-card-list>
     </mat-tab>
   </mat-tab-group>

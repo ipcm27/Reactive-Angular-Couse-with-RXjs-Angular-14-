@@ -16,6 +16,7 @@ import {
 import { HttpClient } from "@angular/common/http";
 import { MatDialog, MatDialogConfig } from "@angular/material/dialog";
 import { CourseDialogComponent } from "../course-dialog/course-dialog.component";
+import { loadingService } from "../loading/loading.service";
 
 @Component({
   selector: "home",
@@ -27,7 +28,10 @@ export class HomeComponent implements OnInit {
 
   advancedCourses$: Observable<Course[]>;
 
-  constructor(private coursesService: CourseService) {}
+  constructor(
+    private coursesService: CourseService,
+    private LoadingComponent: loadingService
+  ) {}
 
   ngOnInit() {
     this.reloadedCourses();

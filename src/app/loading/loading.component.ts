@@ -1,4 +1,4 @@
-import { loadingService } from "./loading.service";
+import { LoadingService } from "./loading.service";
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
 
@@ -8,7 +8,7 @@ import { Observable } from "rxjs";
   styleUrls: ["./loading.component.css"]
 })
 export class LoadingComponent implements OnInit {
-  constructor(private LoadingComponent: loadingService) {}
+  constructor(public loadingService: LoadingService) {}
 
   ngOnInit() {}
 }

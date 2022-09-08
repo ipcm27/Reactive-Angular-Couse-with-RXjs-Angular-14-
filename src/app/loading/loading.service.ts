@@ -12,6 +12,10 @@ export class LoadingService {
   // torno o loading$ inkado no subject
   loading$: Observable<boolean> = this.loadingSubject.asObservable();
 
+  constructor() {
+    console.log("Loading sertvice created");
+  }
+
   showLoaderUntilComplete<T>(obs$: Observable<T>): Observable<T> {
     return of(null).pipe(
       tap(() => this.loadingOn()),

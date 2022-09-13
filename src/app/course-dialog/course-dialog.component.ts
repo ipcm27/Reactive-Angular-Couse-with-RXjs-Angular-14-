@@ -1,3 +1,4 @@
+import { CourseStore } from "./../services/courses.store";
 import { MessagesService } from "./../messages/messages.service";
 import { CourseService } from "./../services/courses.service";
 import { HttpClient } from "@angular/common/http";
@@ -33,8 +34,9 @@ export class CourseDialogComponent implements AfterViewInit {
     private fb: FormBuilder,
     private dialogRef: MatDialogRef<CourseDialogComponent>,
     @Inject(MAT_DIALOG_DATA) course: Course,
-    private coursesService: CourseService,
-    private loadingService: LoadingService,
+    private courseStore: CourseStore,
+    // private coursesService: CourseService,
+    // private loadingService: LoadingService,
     private messagesService: MessagesService
   ) {
     this.course = course;
@@ -52,20 +54,12 @@ export class CourseDialogComponent implements AfterViewInit {
   save() {
     const changes = this.form.value;
 
-    const saveCourse$ = this.coursesService
+    const saveCourse$ = this.courseStore
       .saveCourse(this.course.id, changes)
-      .pipe(
-        catchError(err => {
-          const message = "Could not save course";
-          console.log(message, err);
-          this.messagesService.showErrors(message);
-          return throwError(err);
-        })
-      );
 
-    this.loadingService
-      .showLoaderUntilComplete(saveCourse$)
-      .subscribe(val => this.dialogRef.close(val));
+      .subscribe();
+
+    this.dialogRef.close(changes);
   }
 
   close() {

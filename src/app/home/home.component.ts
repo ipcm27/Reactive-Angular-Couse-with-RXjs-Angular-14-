@@ -1,3 +1,4 @@
+import { CourseStore } from "./../services/courses.store";
 import { CourseService } from "./../services/courses.service";
 import { LoadingService } from "./../loading/loading.service";
 
@@ -31,7 +32,7 @@ export class HomeComponent implements OnInit {
   advancedCourses$: Observable<Course[]>;
 
   constructor(
-    private coursesService: CourseService,
+    private CourseStore: CourseStore,
     private loadingService: LoadingService,
     private messagesService: MessagesService
   ) {}
@@ -41,23 +42,29 @@ export class HomeComponent implements OnInit {
   }
 
   reloadedCourses() {
-    const courses$ = this.coursesService.loadAllCourses().pipe(
-      map(courses => courses.sort(sortCoursesBySeqNo)),
-      catchError(err => {
-        const message = "Could not load courses";
-        this.messagesService.showErrors(message);
-        console.log(message, err);
-        return throwError(err);
-      })
-    );
+    this.beginnerCourses$ = this.CourseStore.filterByCategory("BEGINNER");
 
-    const loadCourses$ = this.loadingService.showLoaderUntilComplete(courses$);
-
-    this.beginnerCourses$ = loadCourses$.pipe(
-      map(courses => courses.filter(course => course.category == "BEGINNER"))
-    );
-    this.advancedCourses$ = loadCourses$.pipe(
-      map(courses => courses.filter(course => course.category == "ADVANCED"))
-    );
+    this.beginnerCourses$ = this.CourseStore.filterByCategory("ADVANCED");
   }
 }
+// Removed bc of the implemation of store
+// reloadedCourses() {
+//   const courses$ = this.coursesService.loadAllCourses().pipe(
+//     map(courses => courses.sort(sortCoursesBySeqNo)),
+//     catchError(err => {
+//       const message = "Could not load courses";
+//       this.messagesService.showErrors(message);
+//       console.log(message, err);
+//       return throwError(err);
+//     })
+//   );
+
+//   const loadCourses$ = this.loadingService.showLoaderUntilComplete(courses$);
+
+//   this.beginnerCourses$ = loadCourses$.pipe(
+//     map(courses => courses.filter(course => course.category == "BEGINNER"))
+//   );
+//   this.advancedCourses$ = loadCourses$.pipe(
+//     map(courses => courses.filter(course => course.category == "ADVANCED"))
+//   );
+// }

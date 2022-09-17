@@ -16,7 +16,7 @@ export class CourseStore {
 
   constructor(
     private http: HttpClient,
-    private laoding: LoadingService,
+    private loading: LoadingService,
     private messages: MessagesService
   ) {
     this.loadAllCourses();
@@ -70,6 +70,6 @@ export class CourseStore {
       tap(courses => this.subject.next(courses))
     );
 
-    this.laoding.showLoaderUntilComplete(loadCourses$).subscribe();
+    this.loading.showLoaderUntilComplete(loadCourses$).subscribe();
   }
 }

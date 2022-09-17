@@ -4,6 +4,8 @@ import { Injectable } from "@angular/core";
 import { User } from "../model/user";
 import { map, share, shareReplay, tap } from "rxjs/operators";
 
+const AUTH_DATA = "auth_data";
+
 @Injectable({
   providedIn: "root"
 })
@@ -18,18 +20,27 @@ export class AuthStore {
   constructor(private http: HttpClient) {
     this.isLoggedIn$ = this.user$.pipe(map(user => !!user));
     this.isLoggedOut$ = this.isLoggedIn$.pipe(map(loggedIN => !loggedIN));
+    const user = localStorage.getItem(AUTH_DATA);
+
+    if (user) {
+      this.subject.next(JSON.parse(user));
+    }
   }
 
   login(email: string, password: string): Observable<User> {
     return this.http
       .post<User>("/api/login", { email, password })
       .pipe(
-        tap(user => this.subject.next(user)),
+        tap(user => {
+          this.subject.next(user),
+            localStorage.setItem(AUTH_DATA, JSON.stringify(user));
+        }),
         shareReplay()
       );
   }
 
   logout() {
     this.subject.next(null);
+    localStorage.removeItem(AUTH_DATA);
   }
 }

@@ -1,5 +1,5 @@
 import { Observable } from "rxjs";
-import { Component, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from "@angular/core";
 import { Lesson } from "../model/lesson";
 
 @Component({
@@ -8,5 +8,7 @@ import { Lesson } from "../model/lesson";
   styleUrls: ["./lesson.component.css"]
 })
 export class LessonComponent {
+  @Input()
+  lesson: Lesson;
   constructor() {}
 }

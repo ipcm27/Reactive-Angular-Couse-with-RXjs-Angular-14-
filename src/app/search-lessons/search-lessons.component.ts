@@ -31,6 +31,7 @@ import { Lesson } from "../model/lesson";
 })
 export class SearchLessonsComponent implements OnInit {
   searchResults$: Observable<Lesson[]>;
+  activeLesson: Lesson;
 
   constructor(private courseService: CourseService) {}
 
@@ -38,5 +39,12 @@ export class SearchLessonsComponent implements OnInit {
 
   onSearch(search: string) {
     this.searchResults$ = this.courseService.searchLessons(search);
+  }
+  openLesson(lesson: Lesson) {
+    this.activeLesson = lesson;
+  }
+
+  onBackToSearch() {
+    this.activeLesson = null;
   }
 }

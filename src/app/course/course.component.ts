@@ -56,9 +56,13 @@ export class CourseComponent implements OnInit {
   ngOnInit() {
     const courseId = parseInt(this.route.snapshot.paramMap.get("courseId"));
 
-    const course$ = this.courseService.loadCourseById(courseId);
+    const course$ = this.courseService
+      .loadCourseById(courseId)
+      .pipe(startWith(null));
 
-    const lessons$ = this.courseService.loadAllCourseLessons(courseId);
+    const lessons$ = this.courseService
+      .loadAllCourseLessons(courseId)
+      .pipe(startWith(null));
 
     this.data$ = combineLatest([course$, lessons$]).pipe(
       map(([course, lessons]) => {
@@ -66,7 +70,8 @@ export class CourseComponent implements OnInit {
           course,
           lessons
         };
-      })
+      }),
+      tap(console.log)
     );
   }
 }

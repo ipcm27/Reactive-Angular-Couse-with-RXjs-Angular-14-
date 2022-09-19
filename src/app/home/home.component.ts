@@ -2,7 +2,7 @@ import { CourseStore } from "./../services/courses.store";
 import { CourseService } from "./../services/courses.service";
 import { LoadingService } from "./../loading/loading.service";
 
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 import { Course, sortCoursesBySeqNo } from "../model/course";
 import { interval, noop, Observable, of, throwError, timer } from "rxjs";
 import {
@@ -24,7 +24,8 @@ import { MessagesService } from "../messages/messages.service";
 @Component({
   selector: "home",
   templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.css"]
+  styleUrls: ["./home.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent implements OnInit {
   beginnerCourses$: Observable<Course[]>;
@@ -32,7 +33,7 @@ export class HomeComponent implements OnInit {
   advancedCourses$: Observable<Course[]>;
 
   constructor(
-    private CourseStore: CourseStore,
+    private courseStore: CourseStore,
     private loadingService: LoadingService,
     private messagesService: MessagesService
   ) {}
@@ -42,9 +43,9 @@ export class HomeComponent implements OnInit {
   }
 
   reloadedCourses() {
-    this.beginnerCourses$ = this.CourseStore.filterByCategory("BEGINNER");
+    this.beginnerCourses$ = this.courseStore.filterByCategory("BEGINNER");
 
-    this.beginnerCourses$ = this.CourseStore.filterByCategory("ADVANCED");
+    this.beginnerCourses$ = this.courseStore.filterByCategory("ADVANCED");
   }
 }
 // Removed bc of the implemation of store
